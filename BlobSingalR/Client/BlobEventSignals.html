@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Blob Event Updates</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            border-bottom: 2px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <table id="blobEventTable" border="1">
+        <thead>
+            <tr>
+                <th>Event Type</th>
+                <th>Event Time</th>
+                <th>Blob Name</th>
+                <th>Blob URL</th>
+                <th>Content Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here dynamically -->
+        </tbody>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
+    <script>
+        async function negotiateSignalR() {
+            const response = await fetch('https://negotiatesignalr.azurewebsites.net/api/negotiate', {
+                method: 'POST'
+            });
+            if (!response.ok) {
+                console.error('Negotiation failed:', response.statusText);
+                return;
+            }
+            const connectionInfo = await response.json();
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(connectionInfo.url, {
+                    accessTokenFactory: () => connectionInfo.accessToken,
+                    skipNegotiation: true,
+                    transport: signalR.HttpTransportType.WebSockets
+                })
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            connection.onclose(async (error) => {
+                console.error('Connection closed:', error);
+                await start(connection);
+            });
+
+            connection.on("blobEvent", (blobEvent) => {
+                try {
+                    if (blobEvent) {
+                        const eventType = blobEvent.EventType || "N/A";
+                        const eventTime = blobEvent.EventTime || "N/A";
+                        const blobUrl = blobEvent.BlobUrl || "N/A";
+                        const blobName = blobEvent.Subject ? blobEvent.Subject.split("/").pop() : "N/A";
+                        const eTag = blobEvent.eTag || "N/A";
+                        const contentType = blobEvent.ContentType || "N/A";
+                        const contentLength = blobEvent.ContentLength || "N/A";
+                        const blobType = blobEvent.BlobType || "N/A";
+                        const accessTier = blobEvent.AccessTier || "N/A";
+
+                        addRowToTable(eventType, eventTime, blobName, blobUrl, eTag, contentType, contentLength, blobType, accessTier);
+                    } else {
+                        console.error('Received undefined blobEvent:', blobEvent);
+                    }
+                } catch (error) {
+                    console.error('Error handling blobEvent:', error, blobEvent);
+                }
+            });
+
+
+            await start(connection);
+        }
+
+        async function start(connection) {
+            try {
+                await connection.start();
+                console.log("connected");
+            } catch (err) {
+                console.error('Failed to connect:', err);
+                setTimeout(() => start(connection), 5000);
+            }
+        }
+
+        negotiateSignalR();
+
+        function addRowToTable(eventType, eventTime, blobName, blobUrl, eTag, contentType, contentLength, blobType, accessTier) {
+            const tableBody = document.querySelector("#blobEventTable tbody");
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+        <td>${eventType}</td>
+        <td>${eventTime}</td>
+        <td>${blobName}</td>
+        <td><a href="${blobUrl}" target="_blank">View</a></td>
+        <td>${contentType}</td>
+    `;
+
+            tableBody.appendChild(row);
+        }
+
+    </script>
+
+</body>
+</html>

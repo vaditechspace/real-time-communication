@@ -1,0 +1,10 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "<<YOUR_STORAGEACCOUNT_CONNECTION_STRING>>",
+    "FUNCTIONS_INPROC_NET8_ENABLED": "1",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureSignalRConnectionString": "<<YOUR_SIGNALR_CONNECTION_STRING>>"
+
+  }
+}

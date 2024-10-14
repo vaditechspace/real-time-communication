@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "ManageBlobEvents": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7035"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 33324,
+      "useSSL": false
+    }
+  }
+}

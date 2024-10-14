@@ -1,0 +1,24 @@
+{
+  "topic": "/subscriptions/sub-id/resourceGroups/rg-paas/providers/Microsoft.Storage/storageAccounts/storageaccountname",
+  "subject": "/blobServices/default/containers/blobtriggers/blobs/second.txt",
+  "eventType": "Microsoft.Storage.BlobCreated",
+  "id": "31568d2f-601e-0038-2b2b-someid",
+  "data": {
+    "api": "PutBlob",
+    "clientRequestId": "d44c7eb8-d8d2-4f6c-bc85-someid",
+    "requestId": "31568d2f-601e-0038-2b2b-someid",
+    "eTag": "0x8DCE8422D87C37ss",
+    "contentType": "text/plain",
+    "contentLength": 27,
+    "blobType": "BlockBlob",
+    "accessTier": "Default",
+    "url": "https://storageaccountname.blob.core.windows.net/blobtriggers/second.txt",
+    "sequencer": "000000000000000000000000000120BA0000000000011f06",
+    "storageDiagnostics": {
+      "batchId": "f8b6d014-e006-0085-002b-someid"
+    }
+  },
+  "dataVersion": "",
+  "metadataVersion": "1",
+  "eventTime": "2024-10-09T09:10:10.9125488Z"
+}

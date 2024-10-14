@@ -1,0 +1,22 @@
+{
+  "topic": "/subscriptions/sub-id/resourceGroups/rg-paas/providers/Microsoft.Storage/storageAccounts/storageaccountname",
+  "subject": "/blobServices/default/containers/blobtriggers/blobs/first.txt",
+  "eventType": "Microsoft.Storage.BlobDeleted",
+  "id": "90bf1622-201e-0080-652a-someid",
+  "data": {
+    "api": "DeleteBlob",
+    "requestId": "90bf1622-201e-0080-652a-someid",
+    "eTag": "0x8DCE83CD96FFD68",
+    "contentType": "text/plain",
+    "contentLength": 20,
+    "blobType": "BlockBlob",
+    "url": "https://storageaccountname.blob.core.windows.net/blobtriggers/first.txt",
+    "sequencer": "000000000000000000000000000120BA0000000000011ed3",
+    "storageDiagnostics": {
+      "batchId": "f8b45c65-e006-0085-002a-someid"
+    }
+  },
+  "dataVersion": "",
+  "metadataVersion": "1",
+  "eventTime": "2024-10-09T09:07:19.8884274Z"
+}
